@@ -71,6 +71,7 @@ namespace IO.Swagger.Controllers
         /// </summary>
         /// <remarks>Multiple status values can be provided with comma separated strings</remarks>
         /// <param name="status">Status values that need to be considered for filter</param>
+        /// <param name=""></param>
         /// <response code="200">successful operation</response>
         /// <response code="400">Invalid status value</response>
         [HttpGet]
@@ -78,7 +79,7 @@ namespace IO.Swagger.Controllers
         [ValidateModelState]
         [SwaggerOperation("FindPetsByStatus")]
         [SwaggerResponse(statusCode: 200, type: typeof(List<Pet>), description: "successful operation")]
-        public virtual IActionResult FindPetsByStatus([FromQuery][Required()]List<string> status)
+        public virtual IActionResult FindPetsByStatus([FromQuery][Required()]List<string> status, [FromQuery] )
         { 
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(200, default(List<Pet>));

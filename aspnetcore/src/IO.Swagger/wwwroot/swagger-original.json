@@ -44,6 +44,20 @@
     "name" : "New Tag 4"
   } ],
   "paths" : {
+    "/subscribe" : {
+      "post" : {
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        },
+        "callbacks" : {
+          "lynntests" : {
+            "$ref" : "https://dev-api.swaggerhub.com/domains/editorone/domainagaintesting/1.0.0#/components/callbacks/lynn"
+          }
+        }
+      }
+    },
     "/pet" : {
       "put" : {
         "tags" : [ "pet" ],

@@ -50,30 +50,6 @@ namespace IO.Swagger.Controllers
         }
 
         /// <summary>
-        /// Returns pet inventories by status
-        /// </summary>
-        /// <remarks>Returns a map of status codes to quantities</remarks>
-        /// <response code="200">successful operation</response>
-        [HttpGet]
-        [Route("/Editororgone/1213/1.0.0/store/inventory")]
-        [Authorize(AuthenticationSchemes = ApiKeyAuthenticationHandler.SchemeName)]
-        [ValidateModelState]
-        [SwaggerOperation("GetInventory")]
-        [SwaggerResponse(statusCode: 200, type: typeof(Dictionary<string, int?>), description: "successful operation")]
-        public virtual IActionResult GetInventory()
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(Dictionary<string, int?>));
-            string exampleJson = null;
-            exampleJson = "{\n  \"key\" : 0\n}";
-            
-                        var example = exampleJson != null
-                        ? JsonConvert.DeserializeObject<Dictionary<string, int?>>(exampleJson)
-                        : default(Dictionary<string, int?>);            //TODO: Change the data returned
-            return new ObjectResult(example);
-        }
-
-        /// <summary>
         /// Find purchase order by ID
         /// </summary>
         /// <remarks>For valid response try integer IDs with value &gt;&#x3D; 1 and &lt;&#x3D; 10.\\ \\ Other values will generated exceptions</remarks>

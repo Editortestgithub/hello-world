@@ -389,30 +389,68 @@
     },
     "/store/inventory" : {
       "get" : {
-        "tags" : [ "store" ],
-        "summary" : "Returns pet inventories by status",
-        "description" : "Returns a map of status codes to quantities",
-        "operationId" : "getInventory",
+        "summary" : "Get all items",
+        "description" : "This operation supports pagination",
+        "parameters" : [ {
+          "name" : "offset",
+          "in" : "query",
+          "description" : "The number of items to skip before returning the results",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "minimum" : 0,
+            "type" : "integer"
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "The number of items to return",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "maximum" : 100.0,
+            "minimum" : 1,
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 20
+          }
+        } ],
         "responses" : {
           "200" : {
-            "description" : "successful operation",
+            "description" : "A list of items"
+          },
+          "default" : {
+            "description" : "An error occurred",
+            "headers" : {
+              "X-RateLimit-Limit" : {
+                "$ref" : "#/components/headers/X-RateLimit-Limit"
+              },
+              "X-RateLimit-Remaining" : {
+                "$ref" : "#/components/headers/X-RateLimit-Remaining"
+              }
+            },
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "type" : "object",
-                  "additionalProperties" : {
-                    "type" : "integer",
-                    "format" : "int32"
-                  },
-                  "x-content-type" : "application/json"
+                  "$ref" : "#/components/schemas/ErrorModel"
                 }
               }
             }
           }
+        }
+      },
+      "post" : {
+        "summary" : "Add a new item",
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/NewItem"
         },
-        "security" : [ {
-          "api_key" : [ ]
-        } ]
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          }
+        }
       }
     },
     "/store/order" : {
@@ -972,6 +1010,19 @@
           "message" : "message"
         }
       },
+      "ErrorModel" : {
+        "required" : [ "code", "message" ],
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "message" : {
+            "type" : "string"
+          }
+        }
+      },
       "body" : {
         "type" : "object",
         "properties" : {
@@ -1012,6 +1063,17 @@
               "items" : {
                 "$ref" : "#/components/schemas/User"
               }
+            }
+          }
+        },
+        "required" : true
+      },
+      "NewItem" : {
+        "description" : "A JSON object containing item data",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : "object"
             }
           }
         },

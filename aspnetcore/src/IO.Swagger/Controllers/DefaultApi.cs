@@ -28,6 +28,47 @@ namespace IO.Swagger.Controllers
     public class DefaultApiController : ControllerBase
     { 
         /// <summary>
+        /// Get all items
+        /// </summary>
+        /// <remarks>This operation supports pagination</remarks>
+        /// <param name="offset">The number of items to skip before returning the results</param>
+        /// <param name="limit">The number of items to return</param>
+        /// <response code="200">A list of items</response>
+        /// <response code="0">An error occurred</response>
+        [HttpGet]
+        [Route("/Editororgone/1213/1.0.0/store/inventory")]
+        [ValidateModelState]
+        [SwaggerOperation("StoreInventoryGet")]
+        [SwaggerResponse(statusCode: 0, type: typeof(ErrorModel), description: "An error occurred")]
+        public virtual IActionResult StoreInventoryGet([FromQuery]int? offset, [FromQuery][Range(1, 100)]int? limit)
+        { 
+            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
+            // return StatusCode(200);
+
+            //TODO: Uncomment the next line to return response 0 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
+            // return StatusCode(0, default(ErrorModel));
+
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Add a new item
+        /// </summary>
+        /// <param name="body">A JSON object containing item data</param>
+        /// <response code="201">Created</response>
+        [HttpPost]
+        [Route("/Editororgone/1213/1.0.0/store/inventory")]
+        [ValidateModelState]
+        [SwaggerOperation("StoreInventoryPost")]
+        public virtual IActionResult StoreInventoryPost([FromBody]Object body)
+        { 
+            //TODO: Uncomment the next line to return response 201 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
+            // return StatusCode(201);
+
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <response code="200">OK</response>

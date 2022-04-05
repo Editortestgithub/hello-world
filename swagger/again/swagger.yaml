@@ -1,0 +1,441 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "Up2Go Salesforce Rest API",
+    "description" : "Up2Go Salesforce Rest API",
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "https://virtserver.dev.swaggerhub.com/editorgithub/test2/1.0.0",
+    "description" : "SwaggerHub API Auto Mocking"
+  }, {
+    "url" : "https://virtserver.swaggerhub.com/SmartBear-CC/up2go_rest_test/1.0.0",
+    "description" : "SwaggerHub API Auto Mocking"
+  } ],
+  "security" : [ {
+    "oauth2password" : [ ]
+  } ],
+  "paths" : {
+    "/SF/data" : {
+      "get" : {
+        "summary" : "Fetches SF data to fill in the sheet when opening.",
+        "description" : "This endpoint returns a json in the response body of the custom metadata with the service and the SObjects...",
+        "parameters" : [ {
+          "name" : "recordId",
+          "in" : "query",
+          "description" : "Id of the Salesforce record for which the sheet is being opened.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "a0a0R00000544UhQAI"
+        }, {
+          "name" : "service",
+          "in" : "query",
+          "description" : "Service defined in the Salesforce custom metadata.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "TeamProject_Assignments"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "GET request of data from SF successful",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SheetPayload"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Error while retrieving the data",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "string",
+                  "example" : "Something happened when trying to process your GET request."
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "summary" : "Update the sheets data into SF. Expects a list of dicts representing a valid Salesforce SObject.",
+        "description" : "This endpoint expects a json with valid SF sObjects to upate them in SF.",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Assignment"
+              },
+              "encoding" : {
+                "payload" : {
+                  "contentType" : "application/json",
+                  "style" : "form"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Update of data in SF successful",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "string",
+                  "example" : "Update successful!"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Error updating data in SF",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "string",
+                  "example" : "Something happened when trying to process your PUT request."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/SF/permissions" : {
+      "get" : {
+        "summary" : "Retrieve the access of the rasic users for the sheet",
+        "description" : "This endpoint expects a recordId and service name as parameters and returns the permissions of the rasic users for the recordId",
+        "parameters" : [ {
+          "name" : "recordId",
+          "in" : "query",
+          "description" : "Id of the Salesforce record for which the sheet is being opened.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "a0a0R00000544UhQAI"
+        }, {
+          "name" : "service",
+          "in" : "query",
+          "description" : "Service defined in the Salesforce custom metadata.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "TeamProject_Assignments"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successfully retrieved the permissions from SF",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Permissions"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "There was an error retrieving the permissions from SF.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "string",
+                  "example" : "Something happened when trying to process your GET request."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Assignment" : {
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/Assignment_inner"
+        }
+      },
+      "SheetPayload" : {
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/SheetPayload_inner"
+        }
+      },
+      "Pages" : {
+        "type" : "object",
+        "properties" : {
+          "tables" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Tables"
+            }
+          },
+          "name" : {
+            "type" : "string",
+            "example" : "Master Sheet"
+          },
+          "isMaster" : {
+            "type" : "boolean",
+            "example" : true
+          },
+          "fields" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Fields"
+            }
+          }
+        }
+      },
+      "Tables" : {
+        "type" : "object",
+        "properties" : {
+          "records" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Records"
+            }
+          },
+          "name" : {
+            "type" : "string",
+            "example" : "Another Demo Project"
+          }
+        }
+      },
+      "Fields" : {
+        "type" : "object",
+        "properties" : {
+          "locked" : {
+            "type" : "boolean",
+            "example" : true
+          },
+          "label" : {
+            "type" : "string",
+            "example" : "Assignment Name"
+          },
+          "formula" : {
+            "type" : "string"
+          },
+          "apiName" : {
+            "type" : "string",
+            "example" : "Name"
+          }
+        }
+      },
+      "Records" : {
+        "type" : "object",
+        "properties" : {
+          "attributes" : {
+            "$ref" : "#/components/schemas/Records_attributes"
+          },
+          "UP2GO_2T__lkp_2TeamProject__c" : {
+            "type" : "string",
+            "example" : "a0a0R00000544UhQAI"
+          },
+          "Name" : {
+            "type" : "string",
+            "example" : "Demo Assignment"
+          },
+          "UP2GO_2T__pkl_Status__c" : {
+            "type" : "string",
+            "description" : "Status of the assignment",
+            "example" : "New"
+          },
+          "Id" : {
+            "type" : "string",
+            "description" : "The Salesforce Id of the assignment",
+            "example" : "a040R0000050wKUQAY"
+          },
+          "UP2GO_2T__lkp_2TeamProject__r" : {
+            "$ref" : "#/components/schemas/Records_UP2GO_2T__lkp_2TeamProject__r"
+          }
+        }
+      },
+      "Permissions" : {
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/Permissions_inner"
+        }
+      },
+      "Unauthorized" : {
+        "type" : "array",
+        "example" : [ {
+          "message" : "Session expired or invalid",
+          "errorCode" : "INVALID_SESSION_ID"
+        } ],
+        "items" : {
+          "$ref" : "#/components/schemas/Unauthorized_inner"
+        }
+      },
+      "Assignment_inner" : {
+        "type" : "object",
+        "properties" : {
+          "Id" : {
+            "type" : "string",
+            "description" : "The Salesforce Id of the object",
+            "example" : "a040R0000050wKUQAY"
+          },
+          "attributes" : {
+            "type" : "object",
+            "properties" : {
+              "type" : {
+                "type" : "string",
+                "description" : "The Salesforce api name of the object",
+                "example" : "UP2GO_2T__Assignment__c"
+              }
+            }
+          },
+          "UP2GO_2T__pkl_Status__c" : {
+            "type" : "string",
+            "description" : "Status of the assignment",
+            "example" : "New"
+          }
+        }
+      },
+      "SheetPayload_inner" : {
+        "type" : "object",
+        "properties" : {
+          "service" : {
+            "type" : "string",
+            "example" : "TeamProject_Assignments"
+          },
+          "recordId" : {
+            "type" : "string",
+            "example" : "a0a0R00000544UhQAI"
+          },
+          "pages" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Pages"
+            }
+          },
+          "name" : {
+            "type" : "string",
+            "example" : "Another Demo Project - Assignments"
+          }
+        }
+      },
+      "Records_attributes" : {
+        "type" : "object",
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "example" : "UP2GO_2T__Assignment__c"
+          }
+        },
+        "example" : null
+      },
+      "Records_UP2GO_2T__lkp_2TeamProject__r_attributes" : {
+        "type" : "object",
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "example" : "UP2GO_2T__Project__c"
+          }
+        },
+        "example" : null
+      },
+      "Records_UP2GO_2T__lkp_2TeamProject__r" : {
+        "type" : "object",
+        "properties" : {
+          "attributes" : {
+            "$ref" : "#/components/schemas/Records_UP2GO_2T__lkp_2TeamProject__r_attributes"
+          },
+          "Id" : {
+            "type" : "string",
+            "example" : "a0a0R00000544UhQAI"
+          },
+          "Name" : {
+            "type" : "string",
+            "example" : "Another Demo Project"
+          }
+        },
+        "example" : null
+      },
+      "Permissions_inner" : {
+        "type" : "object",
+        "properties" : {
+          "recordIds" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "a0a0R00000544UhQAI"
+            }
+          },
+          "service" : {
+            "type" : "string",
+            "example" : "TeamProject_Assignments"
+          },
+          "permissions" : {
+            "type" : "array",
+            "items" : {
+              "type" : "object",
+              "properties" : {
+                "role" : {
+                  "type" : "string",
+                  "description" : "google sheets permissions - reader or writer",
+                  "example" : "writer"
+                },
+                "email" : {
+                  "type" : "string",
+                  "description" : "google email address",
+                  "example" : "patrick.cuellar@up2go.com"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Unauthorized_inner" : {
+        "type" : "object",
+        "properties" : {
+          "message" : {
+            "type" : "string"
+          },
+          "errorCode" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "responses" : {
+      "Unauthorized" : {
+        "description" : "Unauthorized. Make sure you authorize first.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Unauthorized"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes" : {
+      "oauth2password" : {
+        "type" : "oauth2",
+        "flows" : {
+          "password" : {
+            "tokenUrl" : "https://test.salesforce.com/services/oauth2/token",
+            "scopes" : { }
+          }
+        }
+      }
+    }
+  }
+}

@@ -259,7 +259,7 @@
           },
           "Id" : {
             "type" : "string",
-            "description" : "The Salesforce Id of the assignment",
+            "description" : "The asdfasfsafdof the assignment",
             "example" : "a040R0000050wKUQAY"
           },
           "UP2GO_2T__lkp_2TeamProject__r" : {
